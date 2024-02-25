@@ -2,8 +2,9 @@ package config
 
 import (
 	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/db"
-	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/domain/customer"
-	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/domain/transaction"
+	customer "github.com/gabrielalmir/rinha_backend_2024_q1/internal/domain/customer/entity"
+	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/domain/customer/seeder"
+	transaction "github.com/gabrielalmir/rinha_backend_2024_q1/internal/domain/transaction/entity"
 	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/logger"
 	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/router"
 )
@@ -39,6 +40,16 @@ func SetupApi() {
 	}
 
 	log.Info("Database setup complete")
+
+	// Seed the database
+	log.Info("Seeding the database ...")
+	err = seeder.Seed(conn.GetDBConn())
+
+	if err != nil {
+		log.Errorf("Error seeding the database: %s", err)
+		return
+	}
+
 	// End of database setup
 
 	// Initialize routes

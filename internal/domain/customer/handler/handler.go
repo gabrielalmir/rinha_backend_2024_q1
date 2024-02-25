@@ -1,8 +1,11 @@
-package customer
+package handler
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/domain/customer/service"
+	"github.com/gin-gonic/gin"
+)
 
-var customerService *CustomerService
+var customerService *service.CustomerService
 
 func HandleCustomerStatement(ctx *gin.Context) {
 	id := ctx.Param("id")

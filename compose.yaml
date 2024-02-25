@@ -32,9 +32,11 @@ services:
             POSTGRES_PASSWORD: postgres
             POSTGRES_USER: postgres
             POSTGRES_DB: postgres
-        # inialize the database with the schema
-        # volumes:
-        #     -  ./build/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+        volumes:
+            # -  ./build/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+            - db-data:/var/lib/postgresql/data
         ports:
             - 5432:5432
 
+volumes:
+    db-data:
