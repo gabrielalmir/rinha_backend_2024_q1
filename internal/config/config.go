@@ -2,9 +2,8 @@ package config
 
 import (
 	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/db"
-	customer "github.com/gabrielalmir/rinha_backend_2024_q1/internal/domain/customer/entity"
+	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/domain/customer/entity"
 	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/domain/customer/seeder"
-	transaction "github.com/gabrielalmir/rinha_backend_2024_q1/internal/domain/transaction/entity"
 	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/logger"
 	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/router"
 )
@@ -32,7 +31,7 @@ func SetupApi() {
 
 	// Migrate the database
 	log.Info("Migrating the database ...")
-	err = conn.GetDBConn().AutoMigrate(&customer.Customer{}, &transaction.Transaction{})
+	err = conn.GetDBConn().AutoMigrate(&entity.Customer{}, &entity.Transaction{})
 
 	if err != nil {
 		log.Errorf("Error migrating the database: %s", err)
