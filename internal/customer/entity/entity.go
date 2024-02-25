@@ -3,7 +3,7 @@ package entity
 import "time"
 
 type Customer struct {
-	ID           int64         `gorm:"primaryKey;autoIncrement;column:id"`
+	ID           uint64        `gorm:"primaryKey;autoIncrement;column:id"`
 	Limit        int64         `gorm:"column:limite;not null"`
 	Balance      int64         `gorm:"column:saldo;not null"`
 	Transactions []Transaction `gorm:"foreignKey:CustomerID"`

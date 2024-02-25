@@ -18,4 +18,5 @@ func SetupRoutes(log *logger.Logger) {
 
 func RegisterRoutes(r *gin.Engine) {
 	r.GET("/clientes/:id/extrato", handler.HandleCustomerStatement)
+	r.POST("/clientes/:id/transacoes", handler.HandleCreateTrasaction)
 }
