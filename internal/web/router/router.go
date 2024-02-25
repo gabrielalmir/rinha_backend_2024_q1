@@ -1,8 +1,9 @@
-package web
+package router
 
 import (
 	"log"
 
+	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/web/handler"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,8 +14,5 @@ func SetupRoutes() {
 }
 
 func RegisterRoutes(r *gin.Engine) {
-	r.GET("/clientes/:id/extrato", func(ctx *gin.Context) {
-		id := ctx.Param("id")
-		ctx.JSON(200, gin.H{"id": id})
-	})
+	r.GET("/clientes/:id/extrato", handler.HandleCustomerStatement)
 }
