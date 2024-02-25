@@ -1,0 +1,40 @@
+### Liste extrato de um cliente
+
+GET http://localhost:9999/clientes/1/extrato
+
+### Liste extrato de um cliente não existente
+
+GET http://localhost:9999/clientes/6/extrato
+
+### Criar uma transação a um cliente existente
+
+POST http://localhost:9999/clientes/1/transacoes
+Content-Type: application/json
+
+{
+  "valor": 1000,
+  "tipo" : "c",
+  "descricao" : "descricao"
+}
+
+### Criar uma transação a um cliente não existente
+
+POST http://localhost:9999/clientes/6/transacoes
+Content-Type: application/json
+
+{
+  "valor": 1000,
+  "tipo" : "c",
+  "descricao" : "descricao"
+}
+
+### Criar uma transação inválida a um cliente
+
+POST http://localhost:9999/clientes/1/transacoes
+Content-Type: application/json
+
+{
+  "valor": 100000,
+  "tipo" : "c",
+  "descricao" : "descricao"
+}
