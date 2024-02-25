@@ -17,4 +17,6 @@ COPY --from=build /app/api /app/api
 
 ENV GIN_MODE=release
 
+EXPOSE 8080
+
 ENTRYPOINT [ "/app/api" ]

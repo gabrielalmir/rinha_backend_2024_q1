@@ -3,20 +3,38 @@ version: '3.8'
 services:
     api1:
         hostname: api1
+        depends_on:
+            - db
         build: .
         ports:
-            - 8081:8080
+            - 8080
     api2:
         hostname: api2
+        depends_on:
+            - db
         build: .
         ports:
-            - 8082:8080
+            - 8080
     proxy:
         image: nginx:alpine
         ports:
             - 9999:80
         volumes:
+            # mount the nginx configuration
             - ./build/nginx.conf:/etc/nginx/nginx.conf:ro
         depends_on:
             - api1
             - api2
+    db:
+        hostname: db
+        image: postgres:16-alpine
+        environment:
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_DB: postgres
+        # inialize the database with the schema
+        # volumes:
+        #     -  ./build/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+        ports:
+            - 5432:5432
+
