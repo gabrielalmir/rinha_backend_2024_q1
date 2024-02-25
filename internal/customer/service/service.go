@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/domain/customer/dto"
+	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/customer/dto"
 	"gorm.io/gorm"
 )
 

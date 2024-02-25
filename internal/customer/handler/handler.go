@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/domain/customer/service"
+	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/customer/service"
 	"github.com/gin-gonic/gin"
 )
 

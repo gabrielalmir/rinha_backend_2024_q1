@@ -3,7 +3,7 @@ package dto
 import (
 	"time"
 
-	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/domain/customer/entity"
+	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/customer/entity"
 )
 
 type CustomerDTO struct {

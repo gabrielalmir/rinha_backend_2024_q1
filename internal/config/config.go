@@ -1,9 +1,9 @@
 package config
 
 import (
+	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/customer/entity"
+	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/customer/seeder"
 	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/db"
-	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/domain/customer/entity"
-	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/domain/customer/seeder"
 	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/logger"
 	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/router"
 )

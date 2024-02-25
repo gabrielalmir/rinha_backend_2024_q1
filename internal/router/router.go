@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/domain/customer/handler"
+	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/customer/handler"
 	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/logger"
 	"github.com/gin-gonic/gin"
 )
