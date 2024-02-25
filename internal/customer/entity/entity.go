@@ -9,6 +9,10 @@ type Customer struct {
 	Transactions []Transaction `gorm:"foreignKey:CustomerID"`
 }
 
+func (c *Customer) TableName() string {
+	return "clientes"
+}
+
 func NewCustomer(limit, balance int64) *Customer {
 	return &Customer{
 		Limit:   limit,
@@ -23,4 +27,8 @@ type Transaction struct {
 	Description string    `gorm:"column:descricao;not null"`
 	CreatedAt   time.Time `gorm:"column:criado_em;not null"`
 	CustomerID  uint64    `gorm:"column:cliente_id;not null"`
+}
+
+func (t *Transaction) TableName() string {
+	return "transacoes"
 }
