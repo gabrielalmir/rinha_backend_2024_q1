@@ -12,9 +12,9 @@ type CustomerDTO struct {
 	Transactions  []TransactionDTO `json:"ultimas_transacoes"`
 }
 
-func NewCustomerDTO(c *entity.Customer, transactions []entity.Transaction) CustomerDTO {
+func NewCustomerDTO(c *entity.Customer) CustomerDTO {
 	var transactionsDTO []TransactionDTO
-	for _, t := range transactions {
+	for _, t := range c.Transactions {
 		transactionsDTO = append(transactionsDTO, NewTransactionDTO(&t))
 	}
 

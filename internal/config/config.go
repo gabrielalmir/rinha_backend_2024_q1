@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	log  *logger.Logger
-	conn db.DBConn
+	log    *logger.Logger
+	dbConn db.DBConn
 )
 
 func SetupApi() {
@@ -21,8 +21,8 @@ func SetupApi() {
 	// Setup the database
 	log.Info("Setting up the database ...")
 	dbConfig := db.NewDBConfig("db", 5432, "postgres", "postgres", "postgres")
-	conn = db.NewDBConn(dbConfig)
-	err := conn.Open()
+	dbConn = db.NewDBConn(dbConfig)
+	err := dbConn.Connect()
 
 	if err != nil {
 		log.Errorf("Error opening the database connection: %s", err)
@@ -31,7 +31,7 @@ func SetupApi() {
 
 	// Migrate the database
 	log.Info("Migrating the database ...")
-	err = conn.GetDBConn().AutoMigrate(&entity.Customer{}, &entity.Transaction{})
+	err = dbConn.GetDBConn().AutoMigrate(&entity.Customer{}, &entity.Transaction{})
 
 	if err != nil {
 		log.Errorf("Error migrating the database: %s", err)
@@ -42,7 +42,7 @@ func SetupApi() {
 
 	// Seed the database
 	log.Info("Seeding the database ...")
-	err = seeder.Seed(conn.GetDBConn())
+	err = seeder.Seed(dbConn.GetDBConn())
 
 	if err != nil {
 		log.Errorf("Error seeding the database: %s", err)

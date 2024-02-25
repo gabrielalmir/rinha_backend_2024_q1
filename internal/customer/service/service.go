@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/customer/dto"
+	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/customer/entity"
 	"gorm.io/gorm"
 )
 
@@ -14,5 +15,12 @@ func NewCustomerService(db *gorm.DB) *CustomerService {
 }
 
 func (s *CustomerService) GetCustomerStatement(id string) (dto.CustomerDTO, error) {
-	return dto.CustomerDTO{}, nil
+	var customer entity.Customer
+	result := s.db.First(&customer, id)
+
+	if result.Error != nil {
+		return dto.CustomerDTO{}, result.Error
+	}
+
+	return dto.NewCustomerDTO(&customer), nil
 }

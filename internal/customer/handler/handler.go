@@ -2,18 +2,25 @@ package handler
 
 import (
 	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/customer/service"
+	"github.com/gabrielalmir/rinha_backend_2024_q1/internal/db"
 	"github.com/gin-gonic/gin"
 )
-
-var customerService *service.CustomerService
 
 func HandleCustomerStatement(ctx *gin.Context) {
 	id := ctx.Param("id")
 
+	dbConn := db.Instance
+	customerService := service.NewCustomerService(dbConn)
+
 	customer, err := customerService.GetCustomerStatement(id)
+
 	if err != nil {
-		ctx.JSON(500, gin.H{"error": err.Error()})
-		return
+		if err.Error() == "record not found" {
+			ctx.Status(404)
+			return
+		}
+
+		ctx.Status(500)
 	}
 
 	ctx.JSON(200, customer)
