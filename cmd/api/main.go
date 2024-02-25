@@ -9,8 +9,9 @@ import (
 func main() {
 	r := gin.Default()
 
-	r.GET("/", func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{"message": "Hello, world!"})
+	r.GET("/clientes/:id/extrato", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		ctx.JSON(200, gin.H{"id": id})
 	})
 
 	println("Server is running on port 8080")
