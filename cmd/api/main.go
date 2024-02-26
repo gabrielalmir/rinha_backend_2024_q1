@@ -11,7 +11,12 @@ func main() {
 	log := logger.GetLogger("API")
 
 	// Initialize configurations
-	config.Init(log)
+	err := config.Init(log)
+
+	if err != nil {
+		log.Errorf("Error initializing configurations: %s", err)
+		return
+	}
 
 	// Initialize routes
 	log.Info("Setting up the routes ...")

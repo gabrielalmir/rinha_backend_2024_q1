@@ -35,7 +35,7 @@ func MigrateDatabase(log *logger.Logger) error {
 	return nil
 }
 
-func Init(log *logger.Logger) {
+func Init(log *logger.Logger) error {
 	log.Info("Setting up the application ...")
 
 	// Setup the database
@@ -43,7 +43,7 @@ func Init(log *logger.Logger) {
 	err := OpenDatabaseConnection(log)
 
 	if err != nil {
-		return
+		return err
 	}
 
 	// Migrate the database
@@ -52,7 +52,7 @@ func Init(log *logger.Logger) {
 
 	if err != nil {
 		log.Errorf("Error migrating the database: %s", err)
-		return
+		return err
 	}
 
 	log.Info("Database setup complete")
@@ -63,9 +63,10 @@ func Init(log *logger.Logger) {
 
 	if err != nil {
 		log.Errorf("Error seeding the database: %s", err)
-		return
+		return err
 	}
 
 	// End of database setup
 	log.Info("Application setup complete")
+	return nil
 }
