@@ -8,6 +8,11 @@ services:
         build: .
         ports:
             - 8080
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.4'
+                    memory: 100M
     api2:
         hostname: api2
         depends_on:
@@ -15,6 +20,11 @@ services:
         build: .
         ports:
             - 8080
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.4'
+                    memory: 100M
     proxy:
         image: nginx:alpine
         ports:
@@ -25,6 +35,11 @@ services:
         depends_on:
             - api1
             - api2
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.2'
+                    memory: 100M
     db:
         hostname: db
         image: postgres:16-alpine
@@ -37,6 +52,10 @@ services:
             - db-data:/var/lib/postgresql/data
         ports:
             - 5432:5432
-
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.5'
+                    memory: 250M
 volumes:
     db-data:
