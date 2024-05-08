@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model customers {
+  customer_id      Int            @id @default(autoincrement())
+  customer_limit   Int
+  customer_balance Int
+  created_at       DateTime       @default(now()) @db.Timestamp(6)
+  transactions     transactions[]
+
+  @@index([customer_id], map: "customer_id_index")
+}
+
+model transactions {
+  transaction_id          Int       @id @default(autoincrement())
+  transaction_amount      Int
+  transaction_type        String    @db.VarChar(255)
+  transaction_description String    @db.VarChar(255)
+  transaction_date        DateTime  @default(now()) @db.Timestamp(6)
+  transaction_customer    Int
+  customers               customers @relation(fields: [transaction_customer], references: [customer_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([transaction_customer], map: "transaction_customer_index")
+  @@index([transaction_id], map: "transaction_id_index")
+}

@@ -34,5 +34,8 @@ COPY . .
 # Expose the port that the application listens on.
 EXPOSE 8080
 
+# Build the application.
+RUN npm run build
+
 # Run the application.
 CMD npm start
