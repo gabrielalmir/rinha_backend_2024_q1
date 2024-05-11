@@ -11,7 +11,7 @@ export class CustomerRepository {
         })
 
         if (!customer) {
-            throw new CustomerNotFound()
+            return { success: false, error: new CustomerNotFound() }
         }
 
         const transactions = await prisma.transactions.findMany({
@@ -37,13 +37,13 @@ export class CustomerRepository {
         }
     }
 
-    async createTransaction(customerId: number, transaction: TransactionDTO) {
+    async createTransaction(customerId: number, transaction: TransactionDTO): Promise<Result<void>> {
         const customer = await prisma.customers.findFirst({
             where: { customer_id: customerId },
         })
 
         if (!customer) {
-            throw new CustomerNotFound()
+            return { success: false, error: new CustomerNotFound() }
         }
 
         const signedAmount = transaction.type === 'c' ? transaction.amount : -transaction.amount
@@ -53,10 +53,10 @@ export class CustomerRepository {
             && customer.customer_balance + signedAmount <= customer.customer_limit
 
         if (!isValidTransaction) {
-            throw new CustomerTransactionBadRequest()
+            return { success: false, error: new CustomerTransactionBadRequest() }
         }
 
-        const newTransaction = await prisma.transactions.create({
+        await prisma.transactions.create({
             data: {
                 transaction_description: transaction.description,
                 transaction_type: transaction.type,
@@ -65,6 +65,6 @@ export class CustomerRepository {
             },
         })
 
-        return newTransaction
+        return { success: true }
     }
 }

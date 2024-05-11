@@ -22,14 +22,20 @@ app.get("/clientes/:id/extrato", async (request, reply) => {
 
     const { id } = schema.parse(request.params);
 
-    return await customerController.getStatement(+id)
-        .catch((err) => {
-            console.log(err);
-            if (err instanceof CustomerNotFound) {
-                return reply.status(404).send();
-            }
-            return reply.status(500).send();
-        })
+    const { success, data, error } = await customerController.getStatement(+id)
+
+    if (!success) {
+        if (error instanceof CustomerNotFound) {
+            return reply.status(404).send();
+        }
+        return reply.status(500).send();
+    }
+
+    return {
+        total: data?.total,
+        statementDate: data?.statementDate,
+        transactions: data?.transactions,
+    };
 })
 
 app.post("/clientes/:id/transacoes", async (request, reply) => {
@@ -43,17 +49,19 @@ app.post("/clientes/:id/transacoes", async (request, reply) => {
     const { id } = requestSchema.parse(request.params);
     const { valor, tipo, descricao } = bodySchema.parse(request.body);
 
-    return await customerController.createTransaction(+id, valor, tipo, descricao)
-        .then(() => reply.status(201).send())
-        .catch((err) => {
-            if (err instanceof CustomerNotFound) {
-                return reply.status(404).send();
-            }
-            else if (err instanceof CustomerTransactionBadRequest) {
-                return reply.status(400).send();
-            }
-            return reply.status(500).send();
-        })
+    const { success, error } = await customerController.createTransaction(+id, valor, tipo, descricao)
+
+    if (!success) {
+        if (error instanceof CustomerNotFound) {
+            return reply.status(404).send();
+        }
+        else if (error instanceof CustomerTransactionBadRequest) {
+            return reply.status(400).send();
+        }
+        return reply.status(500).send();
+    }
+
+    return reply.status(201).send();
 })
 
 app.listen({ port: env.PORT }, async (err, address) => {
