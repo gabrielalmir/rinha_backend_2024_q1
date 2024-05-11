@@ -1,5 +1,6 @@
 import { prisma } from "../../config/db"
 import { TransactionDTO } from "../dtos/dtos"
+import { CustomerNotFound } from "../errors/customer-not-found"
 
 export class CustomerRepository {
     async getStatement(id: number) {
@@ -8,7 +9,7 @@ export class CustomerRepository {
         })
 
         if (!customer) {
-            throw new Error('Customer not found')
+            throw new CustomerNotFound()
         }
 
         const transactions = await prisma.transactions.findMany({
