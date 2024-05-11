@@ -6,6 +6,7 @@
     "start": "node dist/index.js",
     "build": "tsup src/index.ts",
     "dev": "tsx watch src/index.ts",
+    "postinstall": "prisma generate && prisma migrate deploy",
     "test": "vitest"
   },
   "keywords": [
