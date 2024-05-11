@@ -9,7 +9,7 @@ import { CustomerNotFound } from "./customer/errors/customer-not-found";
 import { CustomerRepository } from "./customer/repositories/customer.repository";
 import { CustomerService } from "./customer/services/customer.service";
 
-export const app = fastify();
+const app = fastify();
 
 const customerController = new CustomerController(
     new CustomerService(new CustomerRepository())
@@ -73,3 +73,5 @@ app.listen({ port: env.PORT }, async (err, address) => {
     console.log(`Server listening at ${address}`);
     await prisma.$connect();
 });
+
+export { app };
