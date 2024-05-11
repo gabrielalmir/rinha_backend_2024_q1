@@ -33,6 +33,7 @@ app.get("/clientes/:id/extrato", async (request, reply) => {
 app.listen({ port: env.PORT }, async (err, address) => {
     if (err) {
         console.error(err);
+        await prisma.$disconnect();
         process.exit(1);
     }
     console.log(`Server listening at ${address}`);
