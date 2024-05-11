@@ -1,5 +1,6 @@
 import { prisma } from "../../config/db"
 import { TransactionDTO } from "../dtos/dtos"
+import { CustomerTransactionBadRequest } from "../errors/customer-bad-request"
 import { CustomerNotFound } from "../errors/customer-not-found"
 
 export class CustomerRepository {
@@ -33,11 +34,17 @@ export class CustomerRepository {
         })
 
         if (!customer) {
-            throw new Error('Customer not found')
+            throw new CustomerNotFound()
         }
 
-        if ((transaction.type !== 'd' && transaction.type !== 'c') && customer.customer_balance + transaction.amount <= customer.customer_limit) {
-            throw new Error('Invalid transaction type')
+        const signedAmount = transaction.type === 'c' ? transaction.amount : -transaction.amount
+
+        const isValidTransaction = (
+            transaction.type === 'd' || transaction.type === 'c')
+            && customer.customer_balance + signedAmount <= customer.customer_limit
+
+        if (!isValidTransaction) {
+            throw new CustomerTransactionBadRequest()
         }
 
         const newTransaction = await prisma.transactions.create({

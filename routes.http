@@ -12,7 +12,7 @@ POST http://localhost:3000/clientes/1/transacoes
 Content-Type: application/json
 
 {
-  "valor": 1000,
+  "valor": 220,
   "tipo" : "c",
   "descricao" : "descricao"
 }

@@ -12,7 +12,10 @@ export class CustomerService {
         const transactionsDTO = []
 
         for (const transaction of transactions) {
-            total += transaction.transaction_amount;
+            const signedAmount = transaction.transaction_type === 'c' ? transaction.transaction_amount : -transaction.transaction_amount;
+
+            total += signedAmount;
+
             transactionsDTO.push({
                 description: transaction.transaction_description,
                 type: transaction.transaction_type,
@@ -21,5 +24,9 @@ export class CustomerService {
         }
 
         return { total, statementDate, transactions: transactionsDTO }
+    }
+
+    async createTransaction(id: number, valor: number, tipo: string, descricao: string) {
+        return await this.customerRepository.createTransaction(id, { amount: valor, type: tipo, description: descricao })
     }
 }

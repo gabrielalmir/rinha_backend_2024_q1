@@ -9,4 +9,8 @@ export class CustomerController {
     async getStatement(id: number): Promise<CustomerStatementDTO> {
         return await this.customerService.getStatement(id)
     }
+
+    async createTransaction(id: number, valor: number, tipo: string, descricao: string) {
+        return await this.customerService.createTransaction(id, valor, tipo, descricao)
+    }
 }

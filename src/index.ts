@@ -4,6 +4,7 @@ import { env } from "./config/env";
 
 import { prisma } from "./config/db";
 import { CustomerController } from "./customer/controllers/customer.controller";
+import { CustomerTransactionBadRequest } from "./customer/errors/customer-bad-request";
 import { CustomerNotFound } from "./customer/errors/customer-not-found";
 import { CustomerRepository } from "./customer/repositories/customer.repository";
 import { CustomerService } from "./customer/services/customer.service";
@@ -23,8 +24,33 @@ app.get("/clientes/:id/extrato", async (request, reply) => {
 
     return await customerController.getStatement(+id)
         .catch((err) => {
+            console.log(err);
             if (err instanceof CustomerNotFound) {
                 return reply.status(404).send();
+            }
+            return reply.status(500).send();
+        })
+})
+
+app.post("/clientes/:id/transacoes", async (request, reply) => {
+    const requestSchema = zod.object({ id: zod.string() });
+    const bodySchema = zod.object({
+        valor: zod.number(),
+        tipo: zod.string(),
+        descricao: zod.string(),
+    });
+
+    const { id } = requestSchema.parse(request.params);
+    const { valor, tipo, descricao } = bodySchema.parse(request.body);
+
+    return await customerController.createTransaction(+id, valor, tipo, descricao)
+        .then(() => reply.status(201).send())
+        .catch((err) => {
+            if (err instanceof CustomerNotFound) {
+                return reply.status(404).send();
+            }
+            else if (err instanceof CustomerTransactionBadRequest) {
+                return reply.status(400).send();
             }
             return reply.status(500).send();
         })
