@@ -1,10 +1,11 @@
 import { prisma } from "../../config/db"
-import { TransactionDTO } from "../dtos/dtos"
+import { Result } from "../@types/result"
+import { CustomerStatementDTO, TransactionDTO } from "../dtos/dtos"
 import { CustomerTransactionBadRequest } from "../errors/customer-bad-request"
 import { CustomerNotFound } from "../errors/customer-not-found"
 
 export class CustomerRepository {
-    async getStatement(id: number) {
+    async getStatement(id: number): Promise<Result<CustomerStatementDTO>> {
         const customer = await prisma.customers.findFirst({
             where: { customer_id: id },
         })
@@ -18,13 +19,21 @@ export class CustomerRepository {
         })
 
         const total = transactions.reduce((acc, transaction) => {
-            return acc + transaction.transaction_amount
+            const signedAmount = transaction.transaction_type === 'c' ? transaction.transaction_amount : -transaction.transaction_amount
+            return acc + signedAmount
         }, 0)
 
         return {
-            total,
-            statementDate: new Date(),
-            transactions,
+            data: {
+                total,
+                statementDate: new Date(),
+                transactions: transactions.map((transaction) => ({
+                    description: transaction.transaction_description,
+                    type: transaction.transaction_type,
+                    amount: transaction.transaction_amount,
+                })),
+            },
+            success: true,
         }
     }
 

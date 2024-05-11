@@ -9,7 +9,7 @@ import { CustomerNotFound } from "./customer/errors/customer-not-found";
 import { CustomerRepository } from "./customer/repositories/customer.repository";
 import { CustomerService } from "./customer/services/customer.service";
 
-const app = fastify();
+export const app = fastify();
 
 const customerController = new CustomerController(
     new CustomerService(new CustomerRepository())
