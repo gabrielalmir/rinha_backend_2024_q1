@@ -5,7 +5,7 @@ import zod from 'zod'
 const envSchema = zod.object({
     NODE_ENV: zod.string().default('production'),
     PORT: zod.number().default(3000),
-    DATABASE_URL: zod.string(),
+    DATABASE_URL: zod.string().default('file:./dev.db'),
 })
 
 export type Env = zod.infer<typeof envSchema>
